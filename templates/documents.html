@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Documents Archivés{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            {% if category %}
+                Documents: {{ category }}
+            {% else %}
+                Tous les Documents Archivés
+            {% endif %}
+        </h2>
+
+        <a href="{{ url_for('upload') }}" class="btn btn-success">
+             Nouveau Document
+        </a>
+    </div>
+
+    {% if documents %}
+    <div class="card shadow">
+        <div class="card-body">
+
+            <input type="text" id="searchInput" class="form-control mb-3"
+                   placeholder="Rechercher un document...">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle" id="documentsTable">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Type</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for doc in documents %}
+                        <tr>
+                            <td>#{{ doc[0] }}</td>
+
+                            <td>
+                                <strong>{{ doc[1] }}</strong>
+                            </td>
+
+                            <td>
+                                <span class="badge bg-info text-dark">
+                                    {{ doc[2] }}
+                                </span>
+                            </td>
+
+                            <td>
+                                {{ doc[5] if doc[5] else 'N/A' }}
+                            </td>
+
+                            <td>
+                                <a href="{{ url_for('uploaded_file', filename=doc[1]) }}"
+                                   target="_blank"
+                                   class="btn btn-sm btn-primary">
+                                   Voir
+                                </a>
+
+                                <a href="{{ url_for('uploaded_file', filename=doc[1]) }}"
+                                   download
+                                   class="btn btn-sm btn-warning">
+                                   Télécharger
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    {% else %}
+        <div class="alert alert-info">
+            Aucun document trouvé.
+        </div>
+    {% endif %}
+
+</div>
+
+<script>
+document.getElementById("searchInput").addEventListener("keyup", function() {
+    let filter = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#documentsTable tbody tr");
+
+    rows.forEach(row => {
+        let text = row.innerText.toLowerCase();
+        row.style.display = text.includes(filter) ? "" : "none";
+    });
+});
+</script>
+
+{% endblock %}

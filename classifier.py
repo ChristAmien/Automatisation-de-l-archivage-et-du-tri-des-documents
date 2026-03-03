@@ -1,15 +1,17 @@
-def classifier(texte):
+def classify_document(text):
+    text = text.lower()
 
-    texte = texte.lower()
+    if any(word in text for word in ["facture", "montant", "total", "tva"]):
+        return "Facture"
 
-    if "réunion" in texte:
-        return "Procès-verbal"
+    elif any(word in text for word in ["contrat", "accord", "signature"]):
+        return "Contrat"
 
-    elif "étudiant" in texte or "relevé de notes" in texte:
-        return "Dossier étudiant"
+    elif any(word in text for word in ["cv", "curriculum", "experience"]):
+        return "CV"
 
-    elif "demande" in texte:
-        return "Demande administrative"
+    elif any(word in text for word in ["rapport", "analyse", "projet"]):
+        return "Rapport"
 
     else:
         return "Autre"

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Uploader un document{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">Uploader et Classifier un Document</h2>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form method="POST" enctype="multipart/form-data" class="needs-validation" action="">
+                <div class="mb-3">
+                    <label for="file" class="form-label">Sélectionner un fichier</label>
+                    <input type="file" class="form-control" id="file" name="file" accept=".pdf,.png,.jpg,.jpeg,.bmp,.tiff,.txt" required>
+                    <small class="form-text text-muted">Formats acceptés: PDF, PNG, JPG, JPEG, BMP, TIFF, TXT (max 50 MB)</small>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">Uploader et Classifier</button>
+                <a href="{{ url_for('documents') }}" class="btn btn-secondary btn-lg">Voir les documents</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

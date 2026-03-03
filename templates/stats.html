@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Statistiques{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4"><i class="bi bi-bar-chart"></i> Statistiques des Documents</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Total des documents archivés</h5>
+                            <h1 class="text-primary">{{ total_docs }}</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {% if stats %}
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="mb-4">Répartition par catégorie</h3>
+                </div>
+            </div>
+            
+            <div class="row">
+                {% for type_doc, count in stats %}
+                <div class="col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title mb-0">{{ type_doc }}</h5>
+                                <span class="badge bg-primary">{{ count }}</span>
+                            </div>
+                            
+                            <div class="progress" style="height: 30px;">
+                                <div class="progress-bar bg-info" role="progressbar" 
+                                     style="width: {{ (count / total_docs * 100) if total_docs > 0 else 0 }}%"
+                                     aria-valuenow="{{ count }}" aria-valuemin="0" aria-valuemax="{{ total_docs }}">
+                                    <strong>{{ ((count / total_docs * 100) if total_docs > 0 else 0) | int }}%</strong>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <a href="{{ url_for('documents_by_category', category=type_doc) }}" class="btn btn-sm btn-outline-primary">
+                                    Voir les documents ({{ count }})
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Résumé</h5>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Catégorie</th>
+                                        <th>Nombre</th>
+                                        <th>Pourcentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for type_doc, count in stats %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ url_for('documents_by_category', category=type_doc) }}">
+                                                {{ type_doc }}
+                                            </a>
+                                        </td>
+                                        <td><strong>{{ count }}</strong></td>
+                                        <td>{{ (count / total_docs * 100) if total_docs > 0 else 0 | round(1) }}%</td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr class="table-active">
+                                        <td><strong>Total</strong></td>
+                                        <td><strong>{{ total_docs }}</strong></td>
+                                        <td><strong>100%</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {% else %}
+            <div class="alert alert-info" role="alert">
+                Aucune statistique disponible. <a href="{{ url_for('upload') }}">Uploader un premier document</a>
+            </div>
+            {% endif %}
+            
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <a href="{{ url_for('upload') }}" class="btn btn-primary">Uploader un document</a>
+                    <a href="{{ url_for('documents') }}" class="btn btn-secondary">Voir tous les documents</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

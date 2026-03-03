@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Erreur serveur (500){% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 text-center">
+            <div class="mb-4">
+                <i class="bi bi-x-circle" style="font-size: 4rem; color: #dc3545;"></i>
+            </div>
+            <h1 class="display-1">500</h1>
+            <h2 class="mb-4">Erreur serveur</h2>
+            <p class="lead mb-4">Une erreur interne s'est produite. Veuillez réessayer plus tard.</p>
+            
+            <div class="btn-group mb-4" role="group">
+                <a href="/" class="btn btn-primary btn-lg">Accueil</a>
+                <a href="/documents" class="btn btn-secondary btn-lg">Documents</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

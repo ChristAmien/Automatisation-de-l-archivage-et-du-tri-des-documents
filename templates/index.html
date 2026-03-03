@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="jumbotron bg-primary text-white rounded-3 p-5 mb-4">
+            <h1 class="display-4"><i class="bi bi-archive"></i> Automatisation de l'Archivage</h1>
+            <p class="lead">Application de gestion et classification automatique des documents du Département ITER</p>
+            <hr class="my-4">
+            <p>Numérisation, extraction de texte par OCR et classification intelligente de documents</p>
+            <a class="btn btn-light btn-lg" href="/upload" role="button">Uploader un document</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body text-center">
+                <i class="bi bi-file-earmark-pdf" style="font-size: 2rem; color: #dc3545;"></i>
+                <h5 class="card-title mt-3">Documents Total</h5>
+                <h2 class="card-text text-primary">{{ total_docs }}</h2>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body text-center">
+                <i class="bi bi-cloud-upload" style="font-size: 2rem; color: #28a745;"></i>
+                <h5 class="card-title mt-3">Uploader</h5>
+                <p class="card-text">Ajouter de nouveaux documents</p>
+                <a href="/upload" class="btn btn-sm btn-success">Uploader</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body text-center">
+                <i class="bi bi-file-text" style="font-size: 2rem; color: #007bff;"></i>
+                <h5 class="card-title mt-3">Documents</h5>
+                <p class="card-text">Consulter tous les documents</p>
+                <a href="/documents" class="btn btn-sm btn-primary">Voir tous</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body text-center">
+                <i class="bi bi-bar-chart" style="font-size: 2rem; color: #ffc107;"></i>
+                <h5 class="card-title mt-3">Statistiques</h5>
+                <p class="card-text">Analyser les données</p>
+                <a href="/stats" class="btn btn-sm btn-warning">Voir stats</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if stats %}
+<div class="row mt-5">
+    <div class="col-md-12">
+        <h3 class="mb-4">Répartition par type de document</h3>
+        <div class="row">
+            {% for type_doc, count in stats %}
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ type_doc }}</h5>
+                        <div class="progress">
+                            <div class="progress-bar bg-info" role="progressbar" 
+                                 style="width: {{ (count / total_docs * 100) if total_docs > 0 else 0 }}%;">
+                                {{ count }} document{{ 's' if count > 1 else '' }}
+                            </div>
+                        </div>
+                        <p class="card-text mt-2">
+                            <strong>{{ ((count / total_docs * 100) if total_docs > 0 else 0) | int }}%</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row mt-5">
+    <div class="col-md-12">
+        <h3 class="mb-4">À propos du projet</h3>
+        <div class="card border-light">
+            <div class="card-body">
+                <h5 class="card-title">Fonctionnalités principales</h5>
+                <ul>
+                    <li><strong>OCR (Optical Character Recognition)</strong> - Extraction automatique de texte depuis les images et PDF</li>
+                    <li><strong>Classification intelligente</strong> - Classification automatique des documents par catégorie</li>
+                    <li><strong>Base de données</strong> - Stockage structuré et recherche rapide des documents</li>
+                    <li><strong>Interface Web</strong> - Accès facile et convivial au système</li>
+                    <li><strong>Statistiques</strong> - Analyse de la répartition des documents</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
